@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Snake
 {
@@ -7,7 +9,6 @@ namespace Snake
         private readonly int width;
         private readonly int height;
 
-        private Point apple;
         private Direction currentDirection = Direction.Right;
 
         public SnakeGame(int width, int height)
@@ -22,9 +23,13 @@ namespace Snake
                     new Point() { X = 3, Y = 1 },
                     new Point() { X = 3, Y = 1 },
                 });
+
+            this.GenerateApple();
         }
 
         public LinkedList<Point> SnakeBody { get; }
+
+        public Point Apple { get; private set; }
 
         public int Score { get; private set; }
 
@@ -135,9 +140,10 @@ namespace Snake
                     break;
             }
 
-            if (head == this.apple)
+            if (head == this.Apple)
             {
                 this.Score++;
+                this.GenerateApple();
             }
             else
             {
@@ -155,6 +161,33 @@ namespace Snake
             this.SnakeBody.AddLast(head);
 
             return GameState.None;
+        }
+
+        private void GenerateApple()
+        {
+            var snake = this.SnakeBody.ToArray();
+            Point newApple;
+            do
+            {
+                newApple.X = Random.Shared.Next(this.width);
+                newApple.Y = Random.Shared.Next(this.height);
+            }
+            while (IsCollide(newApple));
+
+            this.Apple = newApple;
+
+            bool IsCollide(Point point)
+            {
+                for (int i = 0; i < snake.Length; i++)
+                {
+                    if (point == snake[i])
+                    {
+                        return true;
+                    }
+                }
+
+                return false;
+            }
         }
     }
 }
