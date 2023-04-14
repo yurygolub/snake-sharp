@@ -23,6 +23,9 @@ namespace SnakeWpf
         private readonly int pointWidth;
         private readonly int pointHeight;
 
+        private readonly int width;
+        private readonly int height;
+
         private readonly SnakeGame snakeGame = new (FieldWidth, FieldHeight);
         private readonly WriteableBitmap writeableBitmap;
         private readonly Timer timer;
@@ -33,13 +36,19 @@ namespace SnakeWpf
         {
             this.InitializeComponent();
 
-            this.image.Width = this.Width;
-            this.image.Height = this.Height;
+            this.width = (int)this.Width;
+            this.height = (int)this.Height;
 
-            this.pointWidth = (int)this.Width / FieldWidth;
-            this.pointHeight = (int)this.Height / FieldHeight;
+            this.Width = this.width + 15;
+            this.Height = this.height + 35;
 
-            this.writeableBitmap = new ((int)this.Width, (int)this.Height, 96, 96, PixelFormats.Bgr24, null);
+            this.image.Width = this.width;
+            this.image.Height = this.height;
+
+            this.pointWidth = this.width / FieldWidth;
+            this.pointHeight = this.height / FieldHeight;
+
+            this.writeableBitmap = new (this.width, this.height, 96, 96, PixelFormats.Bgr24, null);
 
             this.image.Source = this.writeableBitmap;
 
@@ -116,7 +125,7 @@ namespace SnakeWpf
                     }
                 }
 
-                this.writeableBitmap.AddDirtyRect(new Int32Rect(0, 0, (int)this.Width, (int)this.Height));
+                this.writeableBitmap.AddDirtyRect(new Int32Rect(0, 0, this.width, this.height));
             }
             finally
             {
@@ -133,9 +142,9 @@ namespace SnakeWpf
                 IntPtr backBufferPtr = this.writeableBitmap.BackBuffer;
                 int stride = this.writeableBitmap.BackBufferStride;
 
-                for (int i = 0; i < (int)this.Height; i++)
+                for (int i = 0; i < this.height; i++)
                 {
-                    for (int j = 0; j < (int)this.Width; j++)
+                    for (int j = 0; j < this.width; j++)
                     {
                         IntPtr resultPtr = backBufferPtr;
 
@@ -149,7 +158,7 @@ namespace SnakeWpf
                     }
                 }
 
-                this.writeableBitmap.AddDirtyRect(new Int32Rect(0, 0, (int)this.Width, (int)this.Height));
+                this.writeableBitmap.AddDirtyRect(new Int32Rect(0, 0, this.width, this.height));
             }
             finally
             {
@@ -159,12 +168,18 @@ namespace SnakeWpf
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
+            if (e.Key == Key.Escape)
+            {
+                Environment.Exit(0);
+            }
+
             this.direction = e.Key switch
             {
                 Key.Left => Direction.Left,
                 Key.Right => Direction.Right,
                 Key.Up => Direction.Up,
                 Key.Down => Direction.Down,
+                _ => this.direction,
             };
         }
     }
