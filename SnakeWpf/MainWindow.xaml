@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
         KeyDown="Window_KeyDown"
-        Title="MainWindow" Height="600" Width="600">
+        Title="MainWindow" d:Width="600" d:Height="600">
 
     <Image x:Name="image"
            SnapsToDevicePixels="True"

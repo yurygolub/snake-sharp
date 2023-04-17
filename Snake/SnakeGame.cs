@@ -1,13 +1,16 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Snake
 {
-    public class SnakeGame
+    public class SnakeGame : IEnumerable<Point>
     {
         private readonly int width;
         private readonly int height;
+
+        private readonly LinkedList<Point> snakeBody;
 
         private Direction currentDirection = Direction.Right;
 
@@ -15,27 +18,27 @@ namespace Snake
         {
             this.width = width;
             this.height = height;
-            this.SnakeBody = new LinkedList<Point>(
+            this.snakeBody = new LinkedList<Point>(
                 new[]
                 {
                     new Point() { X = 1, Y = 1 },
                     new Point() { X = 2, Y = 1 },
                     new Point() { X = 3, Y = 1 },
-                    new Point() { X = 3, Y = 1 },
+                    new Point() { X = 4, Y = 1 },
                 });
 
             this.GenerateApple();
         }
 
-        public LinkedList<Point> SnakeBody { get; }
-
         public Point Apple { get; private set; }
+
+        public Point Head => this.snakeBody.Last.Value;
 
         public int Score { get; private set; }
 
         public GameState Move(Direction direction)
         {
-            Point head = this.SnakeBody.Last.Value;
+            Point head = this.snakeBody.Last.Value;
             switch (direction)
             {
                 case Direction.Left:
@@ -83,10 +86,6 @@ namespace Snake
                         {
                             head.X--;
                         }
-                        else
-                        {
-                            head.X = this.width - 1;
-                        }
                     }
 
                     break;
@@ -97,10 +96,6 @@ namespace Snake
                         if (head.X + 1 < this.width)
                         {
                             head.X++;
-                        }
-                        else
-                        {
-                            head.X = 0;
                         }
                     }
 
@@ -113,10 +108,6 @@ namespace Snake
                         {
                             head.Y--;
                         }
-                        else
-                        {
-                            head.Y = this.height - 1;
-                        }
                     }
 
                     break;
@@ -127,10 +118,6 @@ namespace Snake
                         if (head.Y + 1 < this.height)
                         {
                             head.Y++;
-                        }
-                        else
-                        {
-                            head.Y = 0;
                         }
                     }
 
@@ -143,11 +130,18 @@ namespace Snake
             if (head == this.Apple)
             {
                 this.Score++;
+                this.snakeBody.AddLast(head);
+
+                if (this.snakeBody.Count == this.width * this.height)
+                {
+                    return GameState.Win;
+                }
+
                 this.GenerateApple();
             }
             else
             {
-                foreach (var item in this.SnakeBody)
+                foreach (var item in this.snakeBody)
                 {
                     if (head == item)
                     {
@@ -155,17 +149,26 @@ namespace Snake
                     }
                 }
 
-                this.SnakeBody.RemoveFirst();
+                this.snakeBody.RemoveFirst();
+                this.snakeBody.AddLast(head);
             }
-
-            this.SnakeBody.AddLast(head);
 
             return GameState.None;
         }
 
+        public IEnumerator<Point> GetEnumerator()
+        {
+            return this.snakeBody.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return this.GetEnumerator();
+        }
+
         private void GenerateApple()
         {
-            var snake = this.SnakeBody.ToArray();
+            var snake = this.snakeBody.ToArray();
             Point newApple;
             do
             {
