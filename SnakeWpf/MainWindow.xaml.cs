@@ -105,7 +105,10 @@ namespace SnakeWpf
 
                         unsafe
                         {
-                            *(int*)resultPtr = BackgroundColor;
+                            //*(int*)resultPtr = BackgroundColor;
+                            *(byte*)(resultPtr + 0) = 32;
+                            *(byte*)(resultPtr + 1) = 32;
+                            *(byte*)(resultPtr + 2) = 32;
                         }
                     }
                 }
@@ -121,7 +124,10 @@ namespace SnakeWpf
 
                         unsafe
                         {
-                            *(int*)resultPtr = AppleColor;
+                            //*(int*)resultPtr = AppleColor;
+                            *(byte*)(resultPtr + 0) = 32;
+                            *(byte*)(resultPtr + 1) = 196;
+                            *(byte*)(resultPtr + 2) = 32;
                         }
                     }
                 }
@@ -139,7 +145,10 @@ namespace SnakeWpf
 
                             unsafe
                             {
-                                *(int*)resultPtr = SnakeColor;
+                                //*(int*)resultPtr = color_data;
+                                *(byte*)(resultPtr + 0) = 128;
+                                *(byte*)(resultPtr + 1) = 0;
+                                *(byte*)(resultPtr + 2) = 128;
                             }
                         }
                     }
@@ -156,7 +165,10 @@ namespace SnakeWpf
 
                         unsafe
                         {
-                            *(int*)resultPtr = HeadColor;
+                            //*(int*)resultPtr = HeadColor;
+                            *(byte*)(resultPtr + 0) = 0;
+                            *(byte*)(resultPtr + 1) = 64;
+                            *(byte*)(resultPtr + 2) = 128;
                         }
                     }
                 }
