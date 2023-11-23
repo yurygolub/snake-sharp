@@ -6,6 +6,15 @@
         mc:Ignorable="d"
         KeyDown="Window_KeyDown"
         Title="MainWindow" d:Width="600" d:Height="600">
+    <Window.InputBindings>
+        <KeyBinding Key="Esc"
+                    Command="ApplicationCommands.Close"/>
+    </Window.InputBindings>
+
+    <Window.CommandBindings>
+        <CommandBinding Command="ApplicationCommands.Close"
+                        Executed="CloseCommandHandler"/>
+    </Window.CommandBindings>
 
     <Image x:Name="image"
            SnapsToDevicePixels="True"

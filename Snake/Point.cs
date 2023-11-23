@@ -5,22 +5,14 @@
         public int X;
         public int Y;
 
-        public static bool operator ==(Point a, Point b)
+        public static bool operator ==(Point left, Point right)
         {
-            return a.Equals(b);
+            return left.X == right.X && left.Y == right.Y;
         }
 
-        public static bool operator !=(Point a, Point b)
-        {
-            return !a.Equals(b);
-        }
+        public static bool operator !=(Point left, Point right) => !(left == right);
 
-        public override bool Equals(object obj)
-        {
-            Point other = (Point)obj;
-            return this.X == other.X
-                && this.Y == other.Y;
-        }
+        public override bool Equals(object obj) => obj is Point point && this == point;
 
         public override int GetHashCode()
         {

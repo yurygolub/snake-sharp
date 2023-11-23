@@ -27,8 +27,8 @@ namespace SnakeWpf
         private readonly int pointWidth;
         private readonly int pointHeight;
 
-        private readonly WriteableBitmap writeableBitmap;
-        private readonly DispatcherTimer timer;
+        private readonly WriteableBitmap writeableBitmap = new (ImageWidth, ImageHeight, 96, 96, PixelFormats.Bgr24, null);
+        private readonly DispatcherTimer timer = new ();
 
         private SnakeGame snakeGame;
         private Direction direction;
@@ -47,16 +47,15 @@ namespace SnakeWpf
             this.pointWidth = ImageWidth / FieldWidth;
             this.pointHeight = ImageHeight / FieldHeight;
 
-            this.writeableBitmap = new (ImageWidth, ImageHeight, 96, 96, PixelFormats.Bgr24, null);
-
             this.image.Source = this.writeableBitmap;
 
-            this.timer = new DispatcherTimer();
-            this.timer.Tick += this.TimerCallback;
-            this.timer.Interval = new TimeSpan(0, 0, 0, 0, 100);
+            this.timer.Tick += this.Update;
+            this.timer.Interval = TimeSpan.FromMilliseconds(300);
+
+            MessageBox.Show("Press Enter to start game");
         }
 
-        private void TimerCallback(object sender, EventArgs eventArgs)
+        private void Update(object sender, EventArgs eventArgs)
         {
             GameState state = this.snakeGame.Move(this.direction);
             switch (state)
@@ -145,7 +144,7 @@ namespace SnakeWpf
 
                             unsafe
                             {
-                                //*(int*)resultPtr = color_data;
+                                //*(int*)resultPtr = SnakeColor;
                                 *(byte*)(resultPtr + 0) = 128;
                                 *(byte*)(resultPtr + 1) = 0;
                                 *(byte*)(resultPtr + 2) = 128;
@@ -183,7 +182,7 @@ namespace SnakeWpf
 
         private void StartGame()
         {
-            this.snakeGame = new (FieldWidth, FieldHeight);
+            this.snakeGame = new SnakeGame(FieldWidth, FieldHeight);
             this.direction = default;
             this.Draw();
             this.timer.Start();
@@ -192,11 +191,6 @@ namespace SnakeWpf
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Escape)
-            {
-                Environment.Exit(0);
-            }
-
             if (!this.isStarted && e.Key == Key.Enter)
             {
                 this.StartGame();
@@ -210,6 +204,11 @@ namespace SnakeWpf
                 Key.Down => Direction.Down,
                 _ => this.direction,
             };
+        }
+
+        private void CloseCommandHandler(object sender, ExecutedRoutedEventArgs e)
+        {
+            this.Close();
         }
     }
 }
