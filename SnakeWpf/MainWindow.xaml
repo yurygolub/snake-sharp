@@ -4,11 +4,23 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        KeyDown="Window_KeyDown"
-        Title="MainWindow" d:Width="600" d:Height="600">
+        DataContext="{Binding ViewModel, RelativeSource={RelativeSource Self}}"
+        Width="{Binding Width}"
+        Height="{Binding Height}"
+        Title="SnakeWpf" d:Width="600" d:Height="600">
     <Window.InputBindings>
         <KeyBinding Key="Esc"
                     Command="ApplicationCommands.Close"/>
+        <KeyBinding Key="Left"
+                    Command="{Binding GoLeft}"/>
+        <KeyBinding Key="Up"
+                    Command="{Binding GoUp}"/>
+        <KeyBinding Key="Right"
+                    Command="{Binding GoRight}"/>
+        <KeyBinding Key="Down"
+                    Command="{Binding GoDown}"/>
+        <KeyBinding Key="Return"
+                    Command="{Binding StartGameCommand}"/>
     </Window.InputBindings>
 
     <Window.CommandBindings>
@@ -16,7 +28,9 @@
                         Executed="CloseCommandHandler"/>
     </Window.CommandBindings>
 
-    <Image x:Name="image"
+    <Image Source="{Binding ImageSource}"
+           Height="{Binding ImageHeightProp}"
+           Width="{Binding ImageWidthProp}"
            SnapsToDevicePixels="True"
            HorizontalAlignment="Left"
            VerticalAlignment="Top"/>

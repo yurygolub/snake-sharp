@@ -9,7 +9,8 @@ namespace SnakeWpf
     {
         protected override void OnStartup(StartupEventArgs e)
         {
-            this.MainWindow = new MainWindow();
+            var viewModel = new MainViewModel();
+            this.MainWindow = new MainWindow(viewModel);
             this.MainWindow.Show();
             base.OnStartup(e);
         }
