@@ -1,9 +1,8 @@
-﻿namespace Snake
+﻿namespace Snake;
+
+public enum GameState
 {
-    public enum GameState
-    {
-        None,
-        Win,
-        Lose,
-    }
+    None,
+    Win,
+    Lose,
 }

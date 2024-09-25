@@ -1,22 +1,21 @@
-﻿namespace Snake
+﻿namespace Snake;
+
+public struct Point
 {
-    public struct Point
+    public int X;
+    public int Y;
+
+    public static bool operator ==(Point left, Point right)
     {
-        public int X;
-        public int Y;
+        return left.X == right.X && left.Y == right.Y;
+    }
 
-        public static bool operator ==(Point left, Point right)
-        {
-            return left.X == right.X && left.Y == right.Y;
-        }
+    public static bool operator !=(Point left, Point right) => !(left == right);
 
-        public static bool operator !=(Point left, Point right) => !(left == right);
+    public override bool Equals(object obj) => obj is Point point && this == point;
 
-        public override bool Equals(object obj) => obj is Point point && this == point;
-
-        public override int GetHashCode()
-        {
-            return this.X.GetHashCode() ^ this.Y.GetHashCode();
-        }
+    public override int GetHashCode()
+    {
+        return this.X.GetHashCode() ^ this.Y.GetHashCode();
     }
 }

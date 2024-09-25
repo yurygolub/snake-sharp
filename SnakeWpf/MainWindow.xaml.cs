@@ -2,24 +2,23 @@
 using System.Windows;
 using System.Windows.Input;
 
-namespace SnakeWpf
+namespace SnakeWpf;
+
+/// <summary>
+/// Interaction logic for MainWindow.xaml.
+/// </summary>
+public partial class MainWindow : Window
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml.
-    /// </summary>
-    public partial class MainWindow : Window
+    public MainWindow(MainViewModel viewModel)
     {
-        public MainWindow(MainViewModel viewModel)
-        {
-            this.ViewModel = viewModel ?? throw new ArgumentNullException(nameof(viewModel));
-            this.InitializeComponent();
-        }
+        this.ViewModel = viewModel ?? throw new ArgumentNullException(nameof(viewModel));
+        this.InitializeComponent();
+    }
 
-        public MainViewModel ViewModel { get; }
+    public MainViewModel ViewModel { get; }
 
-        private void CloseCommandHandler(object sender, ExecutedRoutedEventArgs e)
-        {
-            this.Close();
-        }
+    private void CloseCommandHandler(object sender, ExecutedRoutedEventArgs e)
+    {
+        this.Close();
     }
 }
